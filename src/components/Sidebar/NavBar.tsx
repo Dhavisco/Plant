@@ -21,7 +21,7 @@ const NavBar: React.FC = () => {
     <>
       {/* Sidebar for Desktop */}
      <aside
-      className={`flex flex-col justify-between bg-green-600 rounded-lg text-white ${
+      className={` hidden lg:flex flex-col justify-between bg-green-600 rounded-lg text-white ${
         isCollapsed ? 'w-16' : 'w-64'
       } h-screen transition-all duration-300`}
     >
