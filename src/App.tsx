@@ -18,7 +18,7 @@ function App() {
       <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<SignUp />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
        </ErrorBoundary>

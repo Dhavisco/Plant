@@ -13,7 +13,7 @@ const Login: React.FC = () => {
   const [apiError, setApiError] = useState<string | null>(null); // State to track API errors
 
   const handleRedirect = () => {
-    navigate('/register');
+    navigate('/signup');
   };
 
   const notificationClose = () => {
