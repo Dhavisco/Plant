@@ -119,20 +119,20 @@ const SignUp: React.FC = () => {
       <Card title="Sign Up">
         <ProgressBar step={step} />
      <Formik
-  initialValues={formData}
-   enableReinitialize
-  validationSchema={ step === 1 ? personalInfoSchema
-              : step === 2 ? accountInfoSchema
-              : contactInfoSchema}
-  onSubmit={(values, actions) => {
-    if (step < 3) {
-      handleNext(values); // Move to the next step
-      actions.setSubmitting(false);
-    } else {
-      signupHandler(values, actions.setSubmitting); // Final submission
-    }
-  }}
->
+      initialValues={formData}
+      enableReinitialize
+      validationSchema={ step === 1 ? personalInfoSchema
+                  : step === 2 ? accountInfoSchema
+                  : contactInfoSchema}
+      onSubmit={(values, actions) => {
+        if (step < 3) {
+          handleNext(values); // Move to the next step
+          actions.setSubmitting(false);
+        } else {
+          signupHandler(values, actions.setSubmitting); // Final submission
+        }
+      }}
+    >
   {({ isSubmitting, isValid, errors, touched }) => (
     <Form>
       {step === 1 && (
@@ -267,7 +267,7 @@ const SignUp: React.FC = () => {
         )}
         <button
           type="submit"
-          className={`font-medium px-4 py-2 text-white bg-green-500 rounded-md ${
+          className={`font-medium px-4 py-2 text-white bg-green-500  hover:bg-green-700 rounded-md ${
             isSubmitting || !isValid ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           disabled={!isValid || isSubmitting}
