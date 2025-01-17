@@ -96,7 +96,7 @@ const SignUp: React.FC = () => {
       {notification && (
         <div className={`absolute top-4 right-4 w-80 p-4 rounded-lg shadow-lg bg-gray-100`}>
           <div className="flex justify-between items-center">
-            <span className={`font-medium flex items-center gap-1 text-gray-500`}>
+            <span className={`font-medium text-sm lg:text-base flex items-center gap-1 text-gray-500`}>
              {notification.type === 'success' ? <FaCheckCircle className='text-green-600 h-5 w-5'/> : <MdCancel className='text-red-600 h-5 w-5'/> } {notification.message}
             </span>
             <button
