@@ -5,10 +5,11 @@ import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { B2Home } from '../button/B2Home';
 import Card from '../UI/Card';
-import LoginNotification from '../UI/LoginNotification';
 import { LuLoader2 } from 'react-icons/lu';
 import { FaCheckCircle} from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
+import {auth} from "../hooks/firebase";
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 const Login: React.FC = () => {
   // const { login } = useAuth(); // Auth hook
@@ -78,12 +79,14 @@ const Login: React.FC = () => {
           onSubmit={async (values, { setSubmitting }) => {
             try {
               setNotification(null);
-              // await login(values); // Uncomment when integrating login API
-               // Simulate successful signup (replace with API call)
-              await new Promise((resolve) => setTimeout(resolve, 1000));
+        
+              await signInWithEmailAndPassword(auth, values.email, values.password);
+              console.log('Login successful!');
+
               setNotification({ message: 'Login successful! Redirecting...', type: 'success' });
               setTimeout(() => navigate('/dashboard'), 3000); // Redirect after 2 seconds
             } catch (error: unknown) {
+              console.log(error)
               setNotification({ message: error instanceof Error ? error.message : 'Login failed.', type: 'error' });
             } finally {
               setSubmitting(false);

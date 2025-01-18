@@ -8,6 +8,9 @@ import ProgressBar from '../UI/ProgressBar';
 import { LuLoader2 } from 'react-icons/lu';
 import { FaCheckCircle} from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import {auth, db} from "../hooks/firebase";
+import {setDoc, doc} from 'firebase/firestore';
 
 // Validation schemas for each step
 const personalInfoSchema = Yup.object({
@@ -63,11 +66,26 @@ const SignUp: React.FC = () => {
 
   const signupHandler = async (values: typeof formData, setSubmitting: (isSubmitting: boolean) => void) => {
     try {
-      // Simulate successful signup (replace with API call)
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+     
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const user = auth.currentUser;
+      console.log(user)
+      if(user){
+        await setDoc(doc(db, "Users", user.uid), {
+          first_name: values.first_name,
+          last_name: values.last_name,
+          email: user.email,
+          address: values.address,
+          phone_number: values.phone_number,
+      });
+    }
+
+      console.log("User registered successfully")
+
       setNotification({ message: 'User registered successfully', type: 'success' });
       setTimeout(() => navigate('/login'), 5000); // Navigate after 5 seconds
     } catch (error) {
+      console.error('Signup failed:', error);
       setNotification({ message: 'Signup failed. Please try again.', type: 'error' });
     } finally {
       setSubmitting(false);

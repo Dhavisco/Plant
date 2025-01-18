@@ -4,6 +4,7 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import LandingPage from './components/page/Index';
 import SignUp from './components/Auth/SignUp';
 import Dashboard from './components/Dashboard';
+import Profile from './components/Profile';
 
 
 
@@ -20,6 +21,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />} />
         </Routes>
        </ErrorBoundary>
       </Router>
