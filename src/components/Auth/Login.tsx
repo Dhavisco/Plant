@@ -10,11 +10,20 @@ import { FaCheckCircle} from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
 import {auth} from "../hooks/firebase";
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { FirebaseError } from 'firebase/app';
 
 const Login: React.FC = () => {
+
+
+
+  type Notification = { 
+    message: string; 
+    type: 'success' | 'error'; 
+  }
+
   // const { login } = useAuth(); // Auth hook
   const navigate = useNavigate(); // Navigation hook
-  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [notification, setNotification] = useState<Notification | null>(null);
   const [progress, setProgress] = useState(100);
 
   const handleRedirect = () => {
@@ -30,6 +39,40 @@ const Login: React.FC = () => {
     email: Yup.string().email('Invalid email address').required('Email is required'),
     password: Yup.string().required('Password is required').min(8, 'Password must be at least 8 characters'),
   });
+
+
+ const handleAuthError = (error: unknown) => {
+  if (error instanceof FirebaseError) {
+    switch (error.code) {
+      case 'auth/wrong-password':
+        setNotification({ message: 'Incorrect password!', type: 'error' });
+        break;
+      case 'auth/user-not-found':
+        setNotification({ message: 'No user found with this email!', type: 'error' });
+        break;
+      case 'auth/invalid-email':
+        setNotification({ message: 'Invalid email address!', type: 'error' });
+        break;
+      case 'auth/too-many-requests':
+        setNotification({ message: 'Too many attempts. Try again later.', type: 'error' });
+        break;
+      case 'auth/invalid-credential':
+        setNotification({ message: 'Invalid credentials provided!', type: 'error' });
+        break;
+      case 'auth/internal-error':
+        setNotification({ message: 'An internal error occurred. Please try again later.', type: 'error' });
+        break;
+      case 'auth/user-disabled':
+        setNotification({ message: 'This user has been disabled.', type: 'error' });
+        break;
+      default:
+        setNotification({ message: 'An unknown error occurred.', type: 'error' });
+    }
+  } else {
+    setNotification({ message: 'An unknown error occurred.', type: 'error' });
+  }
+};
+
 
 
   useEffect(()=> {
@@ -85,9 +128,10 @@ const Login: React.FC = () => {
 
               setNotification({ message: 'Login successful! Redirecting...', type: 'success' });
               setTimeout(() => navigate('/dashboard'), 3000); // Redirect after 2 seconds
-            } catch (error: unknown) {
-              console.log(error)
-              setNotification({ message: error instanceof Error ? error.message : 'Login failed.', type: 'error' });
+            } catch (error) {
+              handleAuthError(error);
+              // console.log(error.message)
+              // console.log(error.code)
             } finally {
               setSubmitting(false);
             }
@@ -132,7 +176,7 @@ const Login: React.FC = () => {
                 className={`w-full text-center font-medium bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg focus:outline-none ${
             isSubmitting || !isValid ? 'opacity-50 cursor-not-allowed' : ''
           }`}
-                disabled={isSubmitting || !isValid}
+                disabled={!isValid || isSubmitting}
               >
                 {isSubmitting ? <div className='flex justify-center'><LuLoader2 className="animate-spin" /></div> : 'Login'}
               </button>

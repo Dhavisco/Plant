@@ -11,6 +11,7 @@ import { MdCancel } from "react-icons/md";
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {auth, db} from "../hooks/firebase";
 import {setDoc, doc} from 'firebase/firestore';
+import { FirebaseError } from 'firebase/app';
 
 // Validation schemas for each step
 const personalInfoSchema = Yup.object({
@@ -46,9 +47,14 @@ const SignUp: React.FC = () => {
     phone_number: '',
   };
 
+  type Notification = {
+     message: string; 
+     type: 'success' | 'error'; 
+    };
+
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState(data);
-  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [notification, setNotification] = useState<Notification | null>(null);
   const [progress, setProgress] = useState(100);
 
    const handleRedirect = () => {
@@ -85,12 +91,41 @@ const SignUp: React.FC = () => {
       setNotification({ message: 'User registered successfully', type: 'success' });
       setTimeout(() => navigate('/login'), 5000); // Navigate after 5 seconds
     } catch (error) {
-      console.error('Signup failed:', error);
-      setNotification({ message: 'Signup failed. Please try again.', type: 'error' });
+      // console.error('Signup failed:', error);
+      handleAuthError(error);
     } finally {
       setSubmitting(false);
     }
   };
+
+  const handleAuthError = (error: unknown) => { 
+    if (error instanceof FirebaseError) {
+    switch (error.code) { 
+      case 'auth/email-already-in-use': 
+      setNotification({ message: 'The email address already exist', type: 'error' }); 
+      break; 
+      case 'auth/invalid-email': 
+      setNotification({ message: 'The email address is badly formatted.', type: 'error' }); 
+      break; 
+      case 'auth/operation-not-allowed': 
+      setNotification({ message: 'Password sign-in is disabled for this project.', type: 'error' }); 
+      break; 
+      case 'auth/weak-password': 
+      setNotification({ message: 'The password is too weak.', type: 'error' }); 
+      break; 
+      case 'auth/too-many-requests': 
+      setNotification({ message: 'Too many requests. Try again later.', type: 'error' }); 
+      break; 
+      case 'auth/internal-error': 
+      setNotification({ message: 'An internal error occurred. Please try again later.', type: 'error' }); 
+      break; 
+      default: 
+      setNotification({ message: 'An unknown error occurred. Please try again.', type: 'error' }); 
+    }
+  } else {
+    setNotification({ message: 'An unknown error occurred.', type: 'error' });
+  }
+};
 
   useEffect(() => {
     if (notification) {
