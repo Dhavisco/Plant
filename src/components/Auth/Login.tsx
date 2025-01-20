@@ -69,7 +69,7 @@ const Login: React.FC = () => {
         setNotification({ message: 'An unknown error occurred.', type: 'error' });
     }
   } else {
-    setNotification({ message: 'An unknown error occurred.', type: 'error' });
+    setNotification({ message: 'An unknown error occurred. Try again', type: 'error' });
   }
 };
 
