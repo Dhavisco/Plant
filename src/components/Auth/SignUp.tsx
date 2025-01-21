@@ -123,7 +123,7 @@ const SignUp: React.FC = () => {
       setNotification({ message: 'An unknown error occurred. Please try again.', type: 'error' }); 
     }
   } else {
-    setNotification({ message: 'An unknown error occurred. Try again', type: 'error' });
+    setNotification({ message: 'An unknown error occurred. Please try again', type: 'error' });
   }
 };
 
