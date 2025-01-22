@@ -66,10 +66,10 @@ const Login: React.FC = () => {
         setNotification({ message: 'This user has been disabled.', type: 'error' });
         break;
       default:
-        setNotification({ message: 'An unknown error occurred.', type: 'error' });
+        setNotification({ message: 'An unknown error occurred. Please try again', type: 'error' });
     }
   } else {
-    setNotification({ message: 'An unknown error occurred. Try again', type: 'error' });
+    setNotification({ message: 'An unknown error occurred. Please try again', type: 'error' });
   }
 };
 
