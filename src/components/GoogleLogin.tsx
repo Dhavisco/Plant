@@ -1,33 +1,50 @@
 import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
+import { LuLoader2 } from 'react-icons/lu';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./hooks/firebase";
+import { useNavigate } from "react-router-dom";
 
-const GoogleLogin = () => {
+type GoogleLoginProps = {
+  setNotification: (notification: { message: string; type: "success" | "error" }) => void;
+};
+
+const GoogleLogin: React.FC<GoogleLoginProps> = ({ setNotification }) => {
+
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const googleLogin = async () => {
     setLoading(true); // Set loading to true when the process starts
     const provider = new GoogleAuthProvider();
-     try {
+    try {
       const result = await signInWithPopup(auth, provider);
-      console.log("result", result)
-      console.log("User info:", result.user);
-      console.log("Token:", await result.user.getIdToken());
-    } catch (error) {
+      if(result.user){
+        console.log("User info:", result.user);
+        setNotification({
+          message: "Google sign-in successful! Redirecting...",
+          type: "success",
+        });
+        // Simulate a redirection or further action
+        setTimeout(() => {
+          console.log("Redirecting user...");
+          navigate('/profile');
+        }, 2000);
+      }
+    } catch (error: any) {
       console.error("Error during Google login:", error);
       switch (error.code) {
         case "auth/popup-closed-by-user":
-          alert("Popup closed before completing the sign-in process.");
+          setNotification({ message: "Popup closed before completing the sign-in process.", type: "error" });
           break;
         case "auth/cancelled-popup-request":
-          alert("Popup was canceled due to a new popup being opened.");
+          setNotification({ message: "Popup was canceled due to a new popup being opened.", type: "error" });
           break;
         case "auth/user-cancelled":
-         alert("You cancelled the Google sign-in. Please try again.");
-         break;
+          setNotification({ message: "You canceled the Google sign-in. Please try again.", type: "error" });
+          break;
         default:
-          alert("An error occurred during sign-in. Please try again.");
+          setNotification({ message: "An error occurred during sign-in. Please try again.", type: "error" });
       }
     } finally {
       setLoading(false); // Reset loading state after the process ends
@@ -44,11 +61,11 @@ const GoogleLogin = () => {
         onClick={googleLogin}
         disabled={loading} // Disable button when loading
       >
-        <span className="px-1 pt-2">
+        <span className="px-1 pt-1">
           <FcGoogle className="w-6 h-6" />
         </span>
         <span className="px-2 py-2 bg-green-600 hover:bg-green-700 text-white">
-          {loading ? "Signing in..." : "Sign in with Google"}
+          {loading ? <div className='flex justify-center'><LuLoader2 className="animate-spin" /></div> : "Sign in with Google"}
         </span>
       </button>
     </div>

@@ -15,8 +15,6 @@ import { FirebaseError } from 'firebase/app';
 
 const Login: React.FC = () => {
 
-
-
   type Notification = { 
     message: string; 
     type: 'success' | 'error'; 
@@ -73,9 +71,6 @@ const Login: React.FC = () => {
     setNotification({ message: 'An unknown error occurred. Please try again', type: 'error' });
   }
 };
-
-
-
 
   useEffect(()=> {
     if(notification) {
@@ -186,7 +181,7 @@ const Login: React.FC = () => {
           )}
         </Formik>
 
-          <GoogleLogin />
+          <GoogleLogin setNotification={setNotification}/>
           
         
       </Card>
