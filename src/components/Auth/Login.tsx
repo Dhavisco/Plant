@@ -183,6 +183,11 @@ const Login: React.FC = () => {
             </Form>
           )}
         </Formik>
+
+        <div className='google-sign in mt-2'>
+          <div className='text-center text-gray-600'>or continue with</div>
+         
+          </div>
       </Card>
 
       <div className="mt-4">
