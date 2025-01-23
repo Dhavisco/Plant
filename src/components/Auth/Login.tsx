@@ -8,7 +8,7 @@ import Card from '../UI/Card';
 import { LuLoader2 } from 'react-icons/lu';
 import { FaCheckCircle} from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-import { FcGoogle } from "react-icons/fc";
+import GoogleLogin from '../GoogleLogin';
 import {auth} from "../hooks/firebase";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
@@ -73,6 +73,7 @@ const Login: React.FC = () => {
     setNotification({ message: 'An unknown error occurred. Please try again', type: 'error' });
   }
 };
+
 
 
 
@@ -185,15 +186,9 @@ const Login: React.FC = () => {
           )}
         </Formik>
 
-        <div className='google-sign flex flex-col items-center in mt-5'>
-          <div className='text-center text-gray-600  mb-3'>Or continue with</div>
-          <button className='flex gap-2 border-2 border-green-600'>
-          <span className='px-1 pt-2'><FcGoogle className='w-6 h-6'/></span>
-          <span className='px-2 py-2 bg-green-600 hover:bg-green-700 text-white'>Sign in with Google</span>
+          <GoogleLogin />
           
-          </button>
-         
-          </div>
+        
       </Card>
 
       <div className="mt-4">
@@ -207,5 +202,4 @@ const Login: React.FC = () => {
     </div>
   );
 };
-
 export default Login;
