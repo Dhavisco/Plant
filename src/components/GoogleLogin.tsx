@@ -4,6 +4,7 @@ import { LuLoader2 } from 'react-icons/lu';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "./hooks/firebase";
 import { useNavigate } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
 
 type GoogleLoginProps = {
   setNotification: (notification: { message: string; type: "success" | "error" }) => void;
@@ -31,9 +32,10 @@ const GoogleLogin: React.FC<GoogleLoginProps> = ({ setNotification }) => {
           navigate('/profile');
         }, 2000);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error during Google login:", error);
-      switch (error.code) {
+      if (error instanceof FirebaseError){
+         switch (error.code) {
         case "auth/popup-closed-by-user":
           setNotification({ message: "Popup closed before completing the sign-in process.", type: "error" });
           break;
@@ -46,6 +48,10 @@ const GoogleLogin: React.FC<GoogleLoginProps> = ({ setNotification }) => {
         default:
           setNotification({ message: "An error occurred during sign-in. Please try again.", type: "error" });
       }
+      }else {
+    setNotification({ message: 'An unknown error occurred. Please try again', type: 'error' });
+  }
+     
     } finally {
       setLoading(false); // Reset loading state after the process ends
     }
@@ -54,7 +60,7 @@ const GoogleLogin: React.FC<GoogleLoginProps> = ({ setNotification }) => {
   return (
     <div className="google-sign flex flex-col items-center mt-5">
       <div className="text-center text-gray-600 mb-3">--Or continue with--</div>
-      <button
+      {/* <button
         className={`flex gap-2 border-2 border-green-600 ${
           loading ? "opacity-50 cursor-not-allowed" : ""
         }`}
@@ -67,7 +73,21 @@ const GoogleLogin: React.FC<GoogleLoginProps> = ({ setNotification }) => {
         <span className="px-2 py-2 bg-green-600 hover:bg-green-700 text-white">
           {loading ? <div className='flex justify-center'><LuLoader2 className="animate-spin" /></div> : "Sign in with Google"}
         </span>
-      </button>
+      </button> */}
+      <button
+    className={`flex items-center justify-center gap-3 border-2 border-green-600 rounded-lg px-4 py-2 ${
+      loading ? "opacity-50 cursor-not-allowed" : "hover:bg-green-100"
+    }`}
+    onClick={googleLogin}
+    disabled={loading} // Disable button when loading
+  >
+    <FcGoogle className="w-6 h-6" /> {/* Icon */}
+    {loading ? (
+      <LuLoader2 className="animate-spin text-green-600" />
+    ) : (
+      <span className="text-green-700 font-medium">Sign in with Google</span>
+    )}
+  </button>
     </div>
   );
 };
