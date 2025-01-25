@@ -140,17 +140,17 @@ const Profile: React.FC = () => {
       </h1>
 
       <div className="profile-details text-gray-700">
-        <p>
+        {/* <p>
           <span className="font-semibold">Email:</span> {userDetails?.email}
-        </p>
-        <p>
+        </p> */}
+        {/* <p>
           <span className="font-semibold">First Name:</span>{" "}
           {userDetails?.first_name || "Not Provided"}
         </p>
         <p>
           <span className="font-semibold">Last Name:</span>{" "}
           {userDetails?.last_name || "Not Provided"}
-        </p>
+        </p> */}
         {userDetails?.photoURL && (
           <div className="mt-4">
             <img

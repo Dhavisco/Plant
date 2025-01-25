@@ -60,20 +60,7 @@ const GoogleLogin: React.FC<GoogleLoginProps> = ({ setNotification }) => {
   return (
     <div className="google-sign flex flex-col items-center mt-5">
       <div className="text-center text-gray-600 mb-3">--Or continue with--</div>
-      {/* <button
-        className={`flex gap-2 border-2 border-green-600 ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-        onClick={googleLogin}
-        disabled={loading} // Disable button when loading
-      >
-        <span className="px-1 pt-1">
-          <FcGoogle className="w-6 h-6" />
-        </span>
-        <span className="px-2 py-2 bg-green-600 hover:bg-green-700 text-white">
-          {loading ? <div className='flex justify-center'><LuLoader2 className="animate-spin" /></div> : "Sign in with Google"}
-        </span>
-      </button> */}
+      
       <button
     className={`flex items-center justify-center gap-3 border-2 border-green-600 rounded-lg px-4 py-2 ${
       loading ? "opacity-50 cursor-not-allowed" : "hover:bg-green-100"
