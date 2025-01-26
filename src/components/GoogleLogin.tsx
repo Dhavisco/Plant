@@ -29,7 +29,7 @@ const GoogleLogin: React.FC<GoogleLoginProps> = ({ setNotification }) => {
         // Simulate a redirection or further action
         setTimeout(() => {
           console.log("Redirecting user...");
-          navigate('/profile');
+          navigate('/dashboard');
         }, 2000);
       }
     } catch (error: unknown) {
