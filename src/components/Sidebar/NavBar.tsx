@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { GiPlantWatering } from 'react-icons/gi';
-import { FaHome, FaSeedling, FaBell, FaCog, FaUser, FaChevronLeft, FaChevronRight, FaUserCircle } from 'react-icons/fa';
+import { FaHome, FaSeedling, FaBell, FaCog, FaUser, FaChevronLeft, FaChevronRight, FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import { auth, db } from '../hooks/firebase'; // Import Firebase auth and Firestore
 import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
+import { signOut } from 'firebase/auth';
 
 const NavBar: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -15,6 +16,9 @@ const NavBar: React.FC = () => {
     firstName?: string;
     lastName?: string;
   } | null>(null);
+
+
+  const navigate = useNavigate()
 
   // Fetch user data on component mount
   useEffect(() => {
@@ -58,10 +62,22 @@ const NavBar: React.FC = () => {
 
     return () => unsubscribe(); // Cleanup subscription
   }, []);
+  
 
   const handleNavToggle = () => {
     setIsCollapsed(!isCollapsed);
   };
+
+  const handleLogout = async () => {
+  try {
+    await signOut(auth);
+    navigate('/login')
+    console.log('User logged out');
+  } catch (error) {
+    console.error('Error logging out:', error);
+  }
+};
+
 
   return (
     <>
@@ -170,6 +186,16 @@ const NavBar: React.FC = () => {
               </div>
             </div>
           )}
+
+           <button
+            onClick={handleLogout}
+            className={`flex items-center py-2 px-4 rounded hover:bg-green-700 ${
+              isCollapsed ? 'justify-center' : ''
+            }`}
+          >
+            <FaSignOutAlt className="mr-3" />
+            {!isCollapsed && 'Logout'}
+          </button>
         </div>
       </aside>
 
