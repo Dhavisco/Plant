@@ -59,7 +59,7 @@ const GoogleLogin: React.FC<GoogleLoginProps> = ({ setNotification }) => {
 
   return (
     <div className="google-sign flex flex-col items-center mt-5">
-      <div className="text-center text-gray-600 mb-3">--Or continue with--</div>
+      <div className="text-center text-gray-600 mb-3">--OR--</div>
       
       <button
     className={`flex items-center justify-center gap-3 border-2 border-green-600 rounded-lg px-4 py-2 ${
