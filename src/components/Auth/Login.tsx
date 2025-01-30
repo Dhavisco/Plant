@@ -151,7 +151,7 @@ const Login: React.FC = () => {
                 <ErrorMessage name="email" component="div" className="text-red-500 text-sm mt-1" />
               </div>
 
-              <div className="mb-4">
+              <div className="">
                 <label className="block text-green-900 text-sm font-bold mb-2" htmlFor="password">
                   Password
                 </label>
@@ -167,7 +167,13 @@ const Login: React.FC = () => {
                 <ErrorMessage name="password" component="div" className="text-red-500 text-sm mt-1" />
               </div>
 
-             
+              <button
+                onClick={() => navigate("/forgot-password")}
+                className="text-green-600 hover:underline mt-2 mb-4 text-sm"
+              >
+                Forgot Password?
+              </button>
+
               <button
                 type="submit"
                 className={`w-full text-center font-medium bg-green-500 hover:bg-green-700 text-white py-2 px-4 rounded-lg focus:outline-none ${

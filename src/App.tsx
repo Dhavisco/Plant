@@ -5,6 +5,7 @@ import LandingPage from './components/page/Index';
 import SignUp from './components/Auth/SignUp';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profile';
+import ForgotPassword from './components/ForgotPassword';
 
 
 
@@ -22,6 +23,8 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+
         </Routes>
        </ErrorBoundary>
       </Router>
