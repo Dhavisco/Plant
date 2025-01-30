@@ -75,7 +75,7 @@ const SignUp: React.FC = () => {
      
       await createUserWithEmailAndPassword(auth, values.email, values.password);
       const user = auth.currentUser;
-      console.log(user)
+      // console.log(user)
       if(user){
         await setDoc(doc(db, "Users", user.uid), {
           first_name: values.first_name,
@@ -86,7 +86,7 @@ const SignUp: React.FC = () => {
       });
     }
 
-      console.log("User registered successfully")
+      // console.log("User registered successfully")
 
       setNotification({ message: 'User registered successfully', type: 'success' });
       setTimeout(() => navigate('/login'), 5000); // Navigate after 5 seconds

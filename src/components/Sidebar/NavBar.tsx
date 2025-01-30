@@ -71,10 +71,10 @@ const NavBar: React.FC = () => {
   const handleLogout = async () => {
   try {
     await signOut(auth);
-    navigate('/login')
-    console.log('User logged out');
+    navigate('/')
+    // console.log('User logged out');
   } catch (error) {
-    console.error('Error logging out:', error);
+    // console.error('Error logging out:', error);
   }
 };
 
