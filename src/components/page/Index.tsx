@@ -14,15 +14,15 @@ const LandingPage: React.FC = () => {
       <nav className="fixed top-0 left-0 w-full bg-transparent shadow-md lg:py-6 py-4 z-50">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <Link to="/" className="text-green-600 text-3xl font-bold font-serif">
-          <GiPlantWatering className='h-10 w-auto text-yellow-500 inline mr-2'/>
-          <span>Plant</span>
+          <GiPlantWatering className='md:h-10 w-auto text-yellow-500 inline mr-2'/>
+          <span className='text-base md:text-xl lg:text-3xl'>Plant</span>
             
           </Link>
-          <div className="space-x-6 font-[Manrope] font-medium tracking-wider ">
+          <div className="md:space-x-6 space-x-4 text-xs md:text-base font-[Manrope] font-medium tracking-wider ">
             <Link to="/login" className="text-white hover:underline">
               Log In
             </Link>
-            <Link to="/signup" className="bg-transparent border-white border-[1px] border-solid text-white px-8 py-3 rounded-full hover:bg-white hover:scale-x-125 hover:text-black transition duration-300 ease-in-out transform">
+            <Link to="/signup" className="bg-transparent border-white border-[1px] border-solid text-white px-6 py-2 md:px-8 md:py-3 rounded-full hover:bg-white hover:scale-x-125 hover:text-black transition duration-300 ease-in-out transform">
               Sign Up
             </Link>
           </div>
@@ -31,7 +31,7 @@ const LandingPage: React.FC = () => {
 
       {/* Hero Section */}
       <header className="hero lg:h-screen text-white py-12 w-full pt-24">
-        <div className="hero-content flex flex-col items-start mx-36 my-24">
+        <div className="hero-content flex flex-col items-start lg:mx-36 ml-6 my-24">
           <p className="font-[Manrope] text-sm tracking-wider mb-3">WELCOME TO PLANT <GiPlantSeed className='inline h-6 w-auto text-yellow-500'/> </p>
           <div className="lg:text-7xl text-left text-4xl flex flex-col font-bold title">
             <span>A</span>
@@ -52,11 +52,11 @@ const LandingPage: React.FC = () => {
             </p>
           <div className="mt-8">
             <Link to="/signup">
-              <button className="bg-green-700 font-[Manrope] text-white text-sm px-6 py-3 rounded-md font-medium hover:bg-green-800">
+              <button className="bg-green-700 font-[Manrope] text-white text-sm px-6 py-3 rounded-md font-medium hover:bg-green-800 transition duration-200 ease-in-out transform">
                 Discover More
               </button>
             </Link>
-            <GiButterflyFlower className='inline w-auto h-10 ml-4 text-yellow-500 font-light rotate-10 hover:scale-12'/>
+            <GiButterflyFlower className='inline w-auto h-10 ml-4 text-yellow-500 font-light rotate-10 hover:scale-125 transition duration-300 ease-in-out transform'/>
             {/* <Link to="/login">
               <button className="border border-white text-white px-6 py-2 rounded-full font-semibold hover:bg-green-700">
                 Log In
