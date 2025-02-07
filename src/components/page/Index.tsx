@@ -1,25 +1,68 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaCloudSun, FaLeaf, FaBell } from 'react-icons/fa';
+import { GiButterflyFlower, GiPlantSeed, GiPlantWatering } from "react-icons/gi";
+import Typewriter from "typewriter-effect";
+import './Home.css'
 
 const LandingPage: React.FC = () => {
+
+  const description = 'Empowering Farmers with Data-Driven Insights';
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col items-center text-center">
-      {/* Hero Section */}
-      <header className="bg-green-600 text-white w-full py-12">
-        <h1 className="text-4xl font-bold">Farmer's Decision Support System</h1>
-        <p className="mt-4 text-lg">Empowering Farmers with Data-Driven Insights</p>
-        <div className="mt-8">
-          <Link to="/signup">
-            <button className="bg-white text-green-600 px-6 py-2 rounded-full font-semibold mr-4 hover:bg-gray-200">
-              Sign Up
-            </button>
+    <div className="bg-gray-50 flex flex-col items-center text-center">
+      {/* Fixed Navigation Bar */}
+      <nav className="fixed top-0 left-0 w-full bg-transparent shadow-md lg:py-6 py-4 z-50">
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
+          <Link to="/" className="text-green-600 text-3xl font-bold font-serif">
+          <GiPlantWatering className='h-10 w-auto text-yellow-500 inline mr-2'/>
+          <span>Plant</span>
+            
           </Link>
-          <Link to="/login">
-            <button className="border border-white text-white px-6 py-2 rounded-full font-semibold hover:bg-green-700">
+          <div className="space-x-6 font-[Manrope] font-medium tracking-wider ">
+            <Link to="/login" className="text-white hover:underline">
               Log In
-            </button>
-          </Link>
+            </Link>
+            <Link to="/signup" className="bg-transparent border-white border-[1px] border-solid text-white px-8 py-3 rounded-full hover:bg-white hover:scale-x-125 hover:text-black transition duration-300 ease-in-out transform">
+              Sign Up
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <header className="hero lg:h-screen text-white py-12 w-full pt-24">
+        <div className="hero-content flex flex-col items-start mx-36 my-24">
+          <p className="font-[Manrope] text-sm tracking-wider mb-3">WELCOME TO PLANT <GiPlantSeed className='inline h-6 w-auto text-yellow-500'/> </p>
+          <div className="lg:text-7xl text-left text-4xl flex flex-col font-bold title">
+            <span>A</span>
+            <span>Farmer's Decision</span>
+            <span className=''> Support System </span>
+            </div>
+          <p className="mt-4 text-sm font-light lg:text-base font-[Manrope] tracking-wider">
+            <Typewriter
+        options={{ loop: true }}
+        onInit={(typewriter) => {
+        typewriter
+          .typeString(description)
+          .pauseFor(5000) // Pause before deleting
+          .deleteAll()
+          .start();
+      }}
+  />
+            </p>
+          <div className="mt-8">
+            <Link to="/signup">
+              <button className="bg-green-700 font-[Manrope] text-white text-sm px-6 py-3 rounded-md font-medium hover:bg-green-800">
+                Discover More
+              </button>
+            </Link>
+            <GiButterflyFlower className='inline w-auto h-10 ml-4 text-yellow-500 font-light rotate-10 hover:scale-12'/>
+            {/* <Link to="/login">
+              <button className="border border-white text-white px-6 py-2 rounded-full font-semibold hover:bg-green-700">
+                Log In
+              </button>
+            </Link> */}
+          </div>
         </div>
       </header>
 
