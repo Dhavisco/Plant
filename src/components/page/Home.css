@@ -35,3 +35,10 @@ nav{
   font-weight: 400;
   font-style: normal;
 }
+
+.bg-section{
+  background: url('../../assets/bg/hero-farmer.jpg') no-repeat center center;
+background-size: cover;
+position: relative;
+
+}

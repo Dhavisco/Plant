@@ -1,9 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FaCloudSun, FaLeaf, FaBell } from 'react-icons/fa';
-import { GiButterflyFlower, GiPlantSeed, GiPlantWatering } from "react-icons/gi";
+import { GiButterflyFlower, GiPlantSeed, GiPlantWatering, GiFruitBowl, GiNigeria } from "react-icons/gi";
+import { MdTipsAndUpdates } from "react-icons/md";
 import Typewriter from "typewriter-effect";
 import './Home.css'
+import FeatureSection from '../FeatureSection';
+import Discover from '../button/Discover';
+
+import farmer from '../../assets/bg/farm-plant.avif'
+import crop from '../../assets/bg/crop.jpg'
 
 const LandingPage: React.FC = () => {
 
@@ -51,59 +56,109 @@ const LandingPage: React.FC = () => {
   />
             </p>
           <div className="mt-8">
-            <Link to="/signup">
-              <button className="bg-green-700 font-[Manrope] text-white text-sm px-6 py-3 rounded-md font-medium hover:bg-green-800 transition duration-200 ease-in-out transform">
-                Discover More
-              </button>
-            </Link>
+            <Discover/>
             <GiButterflyFlower className='inline w-auto h-10 ml-4 text-yellow-500 font-light rotate-10 hover:scale-125 transition duration-300 ease-in-out transform'/>
-            {/* <Link to="/login">
-              <button className="border border-white text-white px-6 py-2 rounded-full font-semibold hover:bg-green-700">
-                Log In
-              </button>
-            </Link> */}
           </div>
         </div>
       </header>
 
       {/* Features Section */}
-      <section className="py-12 px-4 md:px-12 lg:px-24">
-        <h2 className="text-3xl font-bold mb-6">Key Features</h2>
-        <div className="flex flex-col md:flex-row justify-center gap-8">
-          {/* Feature 1 */}
-          <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center text-center max-w-xs">
-            <FaCloudSun size={40} className="text-green-600 mb-4" />
-            <h3 className="text-xl font-semibold">Weather Forecasting</h3>
-            <p className="mt-2 text-gray-600">
-              Accurate weather updates to help you plan your farming activities.
-            </p>
-          </div>
-          {/* Feature 2 */}
-          <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center text-center max-w-xs">
-            <FaLeaf size={40} className="text-green-600 mb-4" />
-            <h3 className="text-xl font-semibold">Crop Recommendations</h3>
-            <p className="mt-2 text-gray-600">
-              Get personalized crop advice based on your location and weather.
-            </p>
-          </div>
-          {/* Feature 3 */}
-          <div className="bg-white shadow-md rounded-lg p-6 flex flex-col items-center text-center max-w-xs">
-            <FaBell size={40} className="text-green-600 mb-4" />
-            <h3 className="text-xl font-semibold">Alerts & Notifications</h3>
-            <p className="mt-2 text-gray-600">
-              Stay informed with real-time alerts for weather and crop actions.
-            </p>
-          </div>
+      <FeatureSection/>
+
+      {/* Introduction Section */}
+<section className="my-16 mx-4 md:mx-12 lg:mx-40">
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-8">
+    <div className="image flex justify-center items-center">
+      <div className="relative w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96">
+        <img
+          src={farmer}
+          alt="First Image"
+          className="w-full h-full rounded-full object-cover shadow-lg"
+        />
+        <img
+          src={crop}
+          alt="Second Image"
+          className="absolute bottom-0 left-0 md:bottom-[-1rem] md:left-[-1rem] w-20 h-20 sm:w-24 sm:h-24 md:w-40 md:h-40 rounded-full object-cover border-4 border-white hover:scale-110 transition duration-300 ease-in-out transform"
+        />
+      </div>
+    </div>
+
+    <div className="intro font-[Manrope] flex flex-col gap-5 mx-4 md:mx-0">
+      <h2 className="title text-3xl lg:text-4xl text-yellow-500 font-semibold mb-[-1rem] text-left">Our Introduction</h2>
+      <div className='sub-title text-2xl font-extrabold text-left'>Empowering Farmers with Smart Solutions</div>
+      <p className='text-green-600 font font-bold text-left text-sm md:text-base'>Maximize Productivity with Data-Driven Insights</p>
+
+      <div className='text-xs md:text-sm text-left text-gray-600 font-light items-start leading-6'>
+        At Plant DSS, we understand the challenges farmers face in today's dynamic agricultural landscape. Our platform combines the power of advanced technology and data analytics to help you make smarter, more confident decisions for your farm.
+        Whether it's predicting the weather, choosing the right crops, or receiving timely alerts, we've got you covered with actionable insights at your fingertips. With Plant DSS, you can focus on what truly matters—growing healthier crops and achieving better yields.
+      </div>
+
+      <div className="flex justify-between items-center font-semibold">
+        <div className='flex items-center gap-2 md:gap-3 text-left text-sm md:text-base'>
+          <div><GiFruitBowl className='h-10 w-auto text-yellow-500 font-light rotate-10 hover:scale-125 transition duration-300 ease-in-out transform'/></div>
+          <div>Increasing Crop Yield</div>
         </div>
-      </section>
+        <div className='flex items-center gap-2 md:gap-3 text-left text-sm md:text-base'>
+          <div><MdTipsAndUpdates className='h-10 w-auto text-yellow-500 font-light rotate-10 hover:scale-125 transition duration-300 ease-in-out transform'/></div>
+          <div>Tips for Storage</div>
+        </div>
+      </div>
+
+      <div className='flex justify-start'>
+        <Discover/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section className="bg-section my-16 w-full h-[34rem] flex items-center">
+  <div className="absolute inset-0 bg-black bg-opacity-50"></div>
+  <div className="relative z-10 text-left font-[Manrope] px-8 md:px-12 lg:px-40 text-white">
+    <h2 className="text-3xl lg:text-5xl font-bold mb-4">Agriculture</h2>
+    <h2 className="text-3xl lg:text-5xl font-bold mb-4">Matters to the</h2>
+    <h2 className="text-3xl lg:text-5xl font-bold mb-4">Future of</h2>
+    <h2 className="text-3xl lg:text-5xl font-bold mb-4">Nigeria <GiNigeria className="text-green-600 inline rotate-10 hover:scale-110 transition duration-300 ease-in-out transform"/> </h2>
+    
+  </div>
+</section>
+
+
+
 
       {/* Footer / Additional CTA */}
-      <footer className="w-full py-6 bg-green-600 text-white">
-        <p className="text-sm">Ready to optimize your farming decisions?</p>
-        <Link to="/signup" className="text-white underline font-semibold">
-          Get Started Today
-        </Link>
-      </footer>
+      <footer className="bg-green-600 text-white py-8">
+  <div className="container ">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="flex flex-col">
+        <h4 className="text-lg font-semibold mb-2">About Us</h4>
+        <p className="text-sm">
+          We are dedicated to empowering farmers with innovative solutions for smarter and more efficient farming practices.
+        </p>
+      </div>
+      <div className="flex flex-col">
+        <h4 className="text-lg font-semibold mb-2">Quick Links</h4>
+        <ul className="text-sm space-y-1">
+          <li><a href="#home" className="hover:underline">Home</a></li>
+          <li><a href="#features" className="hover:underline">Features</a></li>
+          <li><a href="#contact" className="hover:underline">Contact</a></li>
+          <li><a href="#about" className="hover:underline">About</a></li>
+        </ul>
+      </div>
+      <div className="flex flex-col">
+        <h4 className="text-lg font-semibold mb-2">Contact Us</h4>
+        <ul className="text-sm space-y-1">
+          <li>Email: info@plantdss.com</li>
+          <li>Phone: +123 456 7890</li>
+          <li>Address: 1234 Farm Lane, Agri City</li>
+        </ul>
+      </div>
+    </div>
+    <div className="mt-8 text-center text-sm">
+      © 2025 Plant DSS. All rights reserved.
+    </div>
+  </div>
+</footer>
+
     </div>
   );
 };
