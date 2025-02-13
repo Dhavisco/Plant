@@ -30,7 +30,7 @@ const LandingPage: React.FC = () => {
   return (
     <div className="bg-gray-50 flex flex-col items-center text-center">
       {/* Fixed Navigation Bar */}
-      <nav className="fixed top-0 left-0 w-full bg-transparent shadow-md lg:py-6 py-4 z-50">
+      <nav className="nav-landing fixed top-0 left-0 w-full bg-transparent shadow-md lg:py-6 py-4 z-50">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <Link to="/" className="text-green-600 text-3xl font-bold font-serif">
           <GiPlantWatering className='md:h-10 w-auto text-yellow-500 inline mr-2'/>

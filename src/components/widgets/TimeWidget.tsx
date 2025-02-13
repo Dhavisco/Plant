@@ -51,11 +51,15 @@ const TimeWidget: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white shadow-md  rounded-xl p-4 md:py-5 lg:py-10">
-      <div className="flex justify-start gap-1 pl-1.5 rounded-3xl bg-green-700 py-1 w-16 md:w-24 items-center">
+    <div className="bg-green-700 shadow-md  text-white rounded-xl p-4 md:py-5 lg:py-10">
+      <div className='flex justify-between'>
+        <div className='font-semibold md:text-lg text-base font-[Manrope]'>Good Morning, John</div>
+        <div className="flex justify-start gap-1 pl-1.5 rounded-md bg-gray-800 py-1 w-16 md:w-24 items-center">
         <FaLocationDot className='h-3 w-3 md:h-4 md:w-4 text-white'/>
         <h2 className="md:text-lg text-xs text-white font-semibold">{timeData.location}</h2>
       </div>
+      </div>
+      
       <div className=' ml-2 mt-3 text-center text-lg md:text-2xl'> 
         <span className='font-semibold'>
         {timeData.weekday + ","} {""}
