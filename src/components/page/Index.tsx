@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { GiButterflyFlower, GiPlantSeed, GiPlantWatering, GiFruitBowl, GiNigeria } from "react-icons/gi";
-import { MdTipsAndUpdates } from "react-icons/md";
+import { MdTipsAndUpdates, MdEmail, MdPhone, MdLocationOn } from "react-icons/md";
+import { TiSocialFacebook, TiSocialTwitter, TiSocialLinkedin, TiSocialYoutube, TiSocialInstagram } from "react-icons/ti";
 import Typewriter from "typewriter-effect";
 import './Home.css'
 import FeatureSection from '../FeatureSection';
@@ -9,8 +10,21 @@ import Discover from '../button/Discover';
 
 import farmer from '../../assets/bg/farm-plant.avif'
 import crop from '../../assets/bg/crop.jpg'
+import HowItWorks from '../HowItWorks';
+import Preloader from '../Preloader';
 
 const LandingPage: React.FC = () => {
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(()=>{
+   const timer = setTimeout(()=> setLoading(false), 2000);
+   return () => clearTimeout(timer);
+  })
+
+  if (loading){
+    return <Preloader/>
+  }
 
   const description = 'Empowering Farmers with Data-Driven Insights';
   return (
@@ -21,7 +35,6 @@ const LandingPage: React.FC = () => {
           <Link to="/" className="text-green-600 text-3xl font-bold font-serif">
           <GiPlantWatering className='md:h-10 w-auto text-yellow-500 inline mr-2'/>
           <span className='text-base md:text-xl lg:text-3xl'>Plant</span>
-            
           </Link>
           <div className="md:space-x-6 space-x-4 text-xs md:text-base font-[Manrope] font-medium tracking-wider ">
             <Link to="/login" className="text-white hover:underline">
@@ -111,6 +124,9 @@ const LandingPage: React.FC = () => {
   </div>
 </section>
 
+{/* How it Works */}
+<HowItWorks/>
+
 <section className="bg-section my-16 w-full h-[34rem] flex items-center">
   <div className="absolute inset-0 bg-black bg-opacity-50"></div>
   <div className="relative z-10 text-left font-[Manrope] px-8 md:px-12 lg:px-40 text-white">
@@ -122,42 +138,85 @@ const LandingPage: React.FC = () => {
   </div>
 </section>
 
+{/* Footer / Additional CTA */}
+<section className="footer-section mt-8 w-full h-[28rem] flex items-center">
+  <div className="absolute inset-0 bg-gray-950 bg-opacity-95"></div>
+  <div className="relative grid md:grid-cols-3 grid-cols-1 gap-6 md:gap-12 z-10 text-left font-[Manrope] px-8 md:px-12 lg:px-32 text-white">
+  <div className='flex flex-col gap-2 md:gap-6'>
+    <Link to="/" className="text-green-600 text-3xl font-bold font-serif">
+          <GiPlantWatering className='md:h-10 w-auto text-yellow-500 inline mr-2'/>
+          <span className='text-base md:text-xl lg:text-3xl'>Plant</span>
+          </Link>
+    <div className='text-xs md:text-sm text-gray-300 font-light md:leading-10'> We are dedicated to empowering farmers with innovative solutions for smarter and more efficient farming practices.</div>
+    <div>
+     <ul className="flex gap-2 md:gap-4">
+  <li className="bg-gray-900 rounded-full p-1.5 hover:scale-110 transition duration-300 ease-in-out transform">
+    <TiSocialFacebook className='h-6 w-auto text-gray-200' />
+  </li>
+  <li className="bg-gray-900 rounded-full p-1.5 hover:scale-110 transition duration-300 ease-in-out transform">
+    <TiSocialTwitter className='h-6 w-auto text-gray-200' />
+  </li>
+  <li className="bg-gray-900 rounded-full p-1.5 hover:scale-110 transition duration-300 ease-in-out transform">
+    <TiSocialLinkedin className='h-6 w-auto text-gray-200' />
+  </li>
+  <li className="bg-gray-900 rounded-full p-1.5 hover:scale-110 transition duration-300 ease-in-out transform">
+    <TiSocialInstagram className='h-6 w-auto text-gray-200' />
+  </li>
+  <li className="bg-gray-900 rounded-full p-1.5 hover:scale-110 transition duration-300 ease-in-out transform">
+    <TiSocialYoutube className='h-6 w-auto text-gray-200' />
+  </li>
+</ul>
 
-
-
-      {/* Footer / Additional CTA */}
-      <footer className="bg-green-600 text-white py-8">
-  <div className="container ">
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <div className="flex flex-col">
-        <h4 className="text-lg font-semibold mb-2">About Us</h4>
-        <p className="text-sm">
-          We are dedicated to empowering farmers with innovative solutions for smarter and more efficient farming practices.
-        </p>
-      </div>
-      <div className="flex flex-col">
-        <h4 className="text-lg font-semibold mb-2">Quick Links</h4>
-        <ul className="text-sm space-y-1">
+    </div>
+          </div>
+ 
+  <div>
+    <div className=''>Explore</div>
+    <div className='flex gap-1 mb-3 mt-1'>
+      <div className="w-14 h-1 rounded-lg bg-green-500"/> 
+     <div className='w-1 h-1 rounded-full bg-green-500'/>
+    </div>
+     
+    <ul className="text-sm md:text-sm text-gray-300 font-light space-y-2 md:space-y-4">
           <li><a href="#home" className="hover:underline">Home</a></li>
           <li><a href="#features" className="hover:underline">Features</a></li>
           <li><a href="#contact" className="hover:underline">Contact</a></li>
           <li><a href="#about" className="hover:underline">About</a></li>
         </ul>
-      </div>
-      <div className="flex flex-col">
-        <h4 className="text-lg font-semibold mb-2">Contact Us</h4>
-        <ul className="text-sm space-y-1">
-          <li>Email: info@plantdss.com</li>
-          <li>Phone: +123 456 7890</li>
-          <li>Address: 1234 Farm Lane, Agri City</li>
-        </ul>
-      </div>
-    </div>
-    <div className="mt-8 text-center text-sm">
-      © 2025 Plant DSS. All rights reserved.
-    </div>
   </div>
-</footer>
+
+  <div>
+    <div>Contact</div>
+     <div className='flex gap-1 mb-3 mt-1'>
+      <div className="w-14 h-1 rounded-lg bg-green-500"/> 
+     <div className='w-1 h-1 rounded-full bg-green-500'/>
+    </div>
+<ul className="text-sm md:text-sm text-gray-300 font-light space-y-2 md:space-y-4">
+  <li className="flex items-center gap-2">
+    <MdEmail className='h-5 w-5 text-yellow-600' />
+    <span>Email: info@plantdss.com</span>
+  </li>
+  <li className="flex items-center gap-2">
+    <MdPhone className='h-5 w-5 text-yellow-600' />
+    <span>Phone: +123 456 7890</span>
+  </li>
+  <li className="flex items-center gap-2">
+    <MdLocationOn className='h-5 w-5 text-yellow-600' />
+    <span>Address: 1234 Farm Lane, Agri City</span>
+  </li>
+</ul>
+  </div>
+    
+  </div>
+</section>
+
+<section className="w-full py-5 px-8 md:px-12 lg:px-32 text-sm text-gray-300 font-[Manrope] font-light bg-black">
+  <div className='flex justify-between'>
+      <div> © 2025 Plant DSS. All rights reserved.</div>
+      <div>Terms of Use | Privacy Policy</div>
+  </div>
+
+  </section>
 
     </div>
   );

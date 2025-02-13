@@ -12,6 +12,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {auth, db} from "../hooks/firebase";
 import {setDoc, doc} from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
+import Preloader from '../Preloader';
 
 // Validation schemas for each step
 const personalInfoSchema = Yup.object({
@@ -56,6 +57,8 @@ const SignUp: React.FC = () => {
   const [formData, setFormData] = useState(data);
   const [notification, setNotification] = useState<Notification | null>(null);
   const [progress, setProgress] = useState(100);
+   const [loading, setLoading] = useState(true);
+
 
    const handleRedirect = () => {
     navigate('/login');
@@ -142,6 +145,15 @@ const SignUp: React.FC = () => {
       return () => clearInterval(interval);
     }
   }, [notification]);
+
+   useEffect(()=>{
+   const timer = setTimeout(()=> setLoading(false), 2000);
+   return () => clearTimeout(timer);
+  })
+
+  if (loading){
+    return <Preloader/>
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-green-100 via-green-50 to-white px-4 sm:px-6 lg:px-8 relative">

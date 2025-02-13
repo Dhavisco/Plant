@@ -42,3 +42,9 @@ background-size: cover;
 position: relative;
 
 }
+
+.footer-section {
+  background: url('../../assets/bg/footerplant.png') no-repeat center center;
+  background-size: cover;
+  position: relative;
+}

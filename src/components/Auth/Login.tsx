@@ -12,6 +12,7 @@ import GoogleLogin from '../GoogleLogin';
 import {auth} from "../hooks/firebase";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
+import Preloader from '../Preloader';
 
 const Login: React.FC = () => {
 
@@ -24,6 +25,7 @@ const Login: React.FC = () => {
   const navigate = useNavigate(); // Navigation hook
   const [notification, setNotification] = useState<Notification | null>(null);
   const [progress, setProgress] = useState(100);
+  const [loading, setLoading] = useState(true);
 
   const handleRedirect = () => {
     navigate('/signup');
@@ -87,6 +89,16 @@ const Login: React.FC = () => {
       return () => clearInterval(interval)
     }
   }, [notification])
+
+
+ useEffect(()=>{
+   const timer = setTimeout(()=> setLoading(false), 2000);
+   return () => clearTimeout(timer);
+  })
+
+  if (loading){
+    return <Preloader/>
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-r from-green-100 via-green-50 to-white px-4 sm:px-6 lg:px-8 relative">
