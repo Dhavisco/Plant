@@ -4,7 +4,7 @@ import { FaCloudSun, FaLeaf, FaBell } from 'react-icons/fa';
 
 const variants = {
   hidden: { opacity: 0, y: 50 },
-  visible: (i) => ({
+  visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: { delay: i * 0.3 }

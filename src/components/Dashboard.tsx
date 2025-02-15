@@ -1,15 +1,35 @@
 import React, { useState } from 'react';
-import WeatherWidget from './widgets/WeatherWidget'
-import CropCalendar from './widgets/CropCalendar';
-import AlertsPanel from './widgets/AlertsPanel';
+// import WeatherWidget from './widgets/WeatherWidget'
+//import CropCalendar from './widgets/CropCalendar';
+// import AlertsPanel from './widgets/AlertsPanel';
 import NavBar from './Sidebar/NavBar';
 import { FaBell } from 'react-icons/fa';
 import TimeWidget from './widgets/TimeWidget';
+import WeatherChart from './widgets/WeatherChart';
+import RainSnowHistogram from './widgets/RainSnowHistogram';
+import useWeatherHistoryData from './hooks/useWeatherHistoryData';
+import SunshineDurationChart from './widgets/SunshineDurationChart';
 // import DataCharts from './widgets/DataCharts';
 
 const Dashboard: React.FC = () => {
     // State to manage dropdown visibility
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const location = "Lagos";
+  const startDate = "2025-02-07";
+  const endDate = "2025-02-14";
+
+  // Fetch weather data once in Dashboard
+  const { weatherData, isLoading, error } = useWeatherHistoryData(
+    location,
+    startDate,
+    endDate
+  );
+
+  const handleToggle = (collapsed: boolean) => {
+    setIsCollapsed(collapsed);
+  };
 
   // Sample alerts data
   const alerts = [
@@ -23,12 +43,14 @@ const Dashboard: React.FC = () => {
 
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className=" bg-gray-100 flex">
       {/* Sidebar (optional) */}
-      <NavBar/>
+      <NavBar onToggle={handleToggle}/>
 
       {/* Main Content */}
-      <main className="flex-1 p-6">
+      <main className={`flex-1 transition-all duration-300 p-6 overflow-auto h-screen ${
+          isCollapsed ? "lg:ml-16" : "lg:ml-64"
+        }`}>
 
          <div className="">
             <button
@@ -68,27 +90,29 @@ const Dashboard: React.FC = () => {
             )}
           </div>
 
-      <h1 className='lg:text-3xl md:text-2xl font-medium mb-2'>Dashboard</h1>
+      <h1 className='lg:text-xl md:text-xl font-medium mb-2'>Dashboard</h1>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-          {/* Weather Widget */}
-          <div className="col-span-1 lg:col-span-2">
-            <TimeWidget />
-          </div>
-          <div className="col-span-1 lg:col-span-3">
-            <WeatherWidget />
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="col-span-2">
+              <TimeWidget />
+            </div>
+            <div className="col-span-2">
+              <WeatherChart weatherData={weatherData} />
+            </div>
+            <div className="col-span-2 lg:col-span-1">
+              <RainSnowHistogram weatherData={weatherData} />
+            </div>
+            <div className="col-span-2 lg:col-span-1">
+              <SunshineDurationChart weatherData={weatherData} />
+            </div>
           </div>
 
-          {/* Crop Calendar */}
-          <div className="lg:col-span-2">
-            <CropCalendar />
-          </div>
-
-          {/* Alerts Panel */}
-          <div className="lg:col-span-2">
-            <AlertsPanel />
-          </div>
-        </div>
+        )}
 
         {/* Data Visualization */}
         {/* <div className="mt-6">

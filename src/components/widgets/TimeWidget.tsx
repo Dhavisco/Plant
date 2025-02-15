@@ -1,24 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { FaLocationDot } from "react-icons/fa6";
+import React, { useState, useEffect, useMemo } from 'react';
+import { FaLocationDot } from 'react-icons/fa6';
+import weatherIcons from "../../store/data.json"
+
+import windIcon from '../../assets/icons/wind.svg';
+import humidityIcon from '../../assets/icons/humidity.svg';
+import thermometerIcon from '../../assets/icons/thermometer-celsius.svg'
+import { useWeather } from '../../api/weatherApi';
+import { useUserStore } from '../../store/useUserStore'; 
+import Preloader from '../Preloader'; // Assuming Preloader is in src/components
+
+import './TimeWidget.css';
 
 const TimeWidget: React.FC = () => {
-  // State to store the time and date
+  // State for time and date
   const [timeData, setTimeData] = useState({
-    location: '',
+    location: 'Lagos',
     hour: '',
     minute: '',
     date: '',
     weekday: '',
   });
 
-  // Function to update the time
+  const { userDetails, isLoading: isUserLoading } = useUserStore(); // Get user details
+
+  const [greeting, setGreeting] = useState('');
+  
+
+  // Use custom hook to fetch weather data
+  const city = useMemo(() => 'Ojo', []); // Or use prop/state with dependency array
+  const { data, isLoading, error } = useWeather(city);
+
+  // const { data, isLoading, error } = useWeather('Mushin');
+
+  // Update time function
   const updateTime = () => {
     const currentDate = new Date();
     const [hour, minute] = currentDate
       .toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       .split(':');
-    setTimeData({
-      location: 'Lagos',
+
+    setTimeData((prev) => ({
+      ...prev,
       hour,
       minute,
       date: currentDate.toLocaleDateString('en-US', {
@@ -26,57 +48,127 @@ const TimeWidget: React.FC = () => {
         month: 'short',
         year: 'numeric',
       }),
-      weekday: currentDate.toLocaleDateString('en-US', { weekday: 'long' }), // Update weekday
-    });
+      weekday: currentDate.toLocaleDateString('en-US', { weekday: 'long' }),
+    }));
+
+    // Set greeting based on hour
+    const currentHour = currentDate.getHours();
+    if (currentHour < 12) {
+      setGreeting('Good morning');
+    } else if (currentHour < 18) {
+      setGreeting('Good afternoon');
+    } else {
+      setGreeting('Good evening');
+    }
   };
 
+  // Set interval to update time
   useEffect(() => {
-    // Initial update
     updateTime();
-
-    // Calculate time until the next minute
     const now = new Date();
     const secondsUntilNextMinute = 60 - now.getSeconds();
-
-    // Schedule the next update
     const timer = setTimeout(() => {
       updateTime();
-      // After the first update, set an interval to update every minute
       const interval = setInterval(updateTime, 60000);
-      return () => clearInterval(interval); // Cleanup interval on unmount
+      return () => clearInterval(interval);
     }, secondsUntilNextMinute * 1000);
 
-    // Cleanup timeout on unmount
     return () => clearTimeout(timer);
   }, []);
 
+  // Loading and Error Handling
+  if (isLoading || isUserLoading) {
+    return <Preloader />;
+  }
+
+  if (error) {
+    return <div className="text-red-500">Failed to load weather data.</div>;
+  }
+
+  // Extract weather data
+
+  console.log(data)
+  const weather = data?.data?.weather;
+  const location = data?.data?.location;
+
+  // Get the weather condition to determine the icon
+  const weatherCondition = weather?.main as keyof typeof weatherIcons;
+  const weatherIcon = weatherIcons[weatherCondition] || weatherIcons.Clear; // Default to Clear if no match
+
+  // Round temperature and add °C
+  const temperature = weather?.temp ? Math.round(weather.temp) : '--';
+  const temperatureMin = weather?.temp_min ? Math.round(weather.temp_min) : '--';
+  const temperatureMax = weather?.temp_max ? Math.round(weather.temp_max) : '--';
+
+  const userName = userDetails?.first_name || userDetails?.displayName || 'User';
+
   return (
-    <div className="bg-green-700 shadow-md  text-white rounded-xl p-4 md:py-5 lg:py-10">
-      <div className='flex justify-between'>
-        <div className='font-semibold md:text-lg text-base font-[Manrope]'>Good Morning, John</div>
-        <div className="flex justify-start gap-1 pl-1.5 rounded-md bg-gray-800 py-1 w-16 md:w-24 items-center">
-        <FaLocationDot className='h-3 w-3 md:h-4 md:w-4 text-white'/>
-        <h2 className="md:text-lg text-xs text-white font-semibold">{timeData.location}</h2>
-      </div>
-      </div>
-      
-      <div className=' ml-2 mt-3 text-center text-lg md:text-2xl'> 
-        <span className='font-semibold'>
-        {timeData.weekday + ","} {""}
-        </span> 
-        <span className=''>{timeData.date}</span> 
-      </div>
-      <div className="mt-2 text-center space-y-2">
-        {/* Time Display with Animated Colon */}
-        <div className="text-5xl md:text-6xl font-bold">
-          {timeData.hour}
-          <span className="animate-pulse">:</span>
-          {timeData.minute}
+    <div className="shadow-md text-white rounded-xl md:px-6 md:py-5 timeWidget">
+      <div className="timeWidgetContent">
+        <div className="flex justify-between">
+          <div className="font-semibold md:text-lg text-base font-[Manrope] tracking-wide">
+            {greeting}, {userName}
+          </div>
+          <div className="flex justify-start gap-1 rounded-md bg-gray-800 bg-opacity-50 py-1 px-3 items-center overlay">
+            <FaLocationDot className="h-3 w-3 md:h-4 md:w-4 text-white" />
+            <h2 className="md:text-base text-xs text-white  tracking-wide">
+              {location?.city || 'Lagos'}, {location?.state}
+            </h2>
+          </div>
         </div>
-        
+
+        <div className="mt-8 md:mt-4 font-[Manrope] space-y-2">
+          <div className="text-5xl md:text-6xl font-bold">
+            {timeData.hour}
+            <span className="animate-pulse">:</span>
+            {timeData.minute}
+          </div>
+
+          <div className="mt-3 text-lg md:text-2xl font-light">
+            <span className="">{timeData.weekday}, </span>
+            <span>{timeData.date}</span>
+          </div>
+
+          <div>
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="tracking-wider font-light mt-6 md:mt-3">
+                  Weather Forecast
+                </div>
+                <div className="font-semibold mt-1 mb-1 text-2xl md:text-3xl">
+                  {weather?.description || 'Partly Cloudy'}
+                </div>
+                <div className="text-sm flex font-light gap-1 items-center">
+                  <span className="flex">
+                    <img src={windIcon} className="w-6 h-auto" alt="Wind" />
+                    {weather?.wind_speed || 10} km/h
+                  </span>
+                  <span className="flex">
+                    <img src={humidityIcon} className="w-auto h-6" alt="Humidity" />
+                    {weather?.humidity || 30}%
+                  </span>
+                </div>
+                 <div className="text-sm text-white font-light">
+                  <span>
+                    <img src={thermometerIcon} alt="" className='h-6 w-auto inline'/>
+                  </span>
+                  Min: {temperatureMin}°C | Max: {temperatureMax}°C
+                </div>
+              </div>
+              
+              <div>
+                <div>
+                  <img src={weatherIcon} alt="Weather Icon" className="h-28 w-28" />
+                </div>
+                
+                <div>Feels like {temperature}°C</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
-
 export default TimeWidget;

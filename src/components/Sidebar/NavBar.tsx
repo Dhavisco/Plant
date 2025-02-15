@@ -7,7 +7,13 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { signOut } from 'firebase/auth';
 
-const NavBar: React.FC = () => {
+import './NavBar.css'
+
+interface NavBarProps {
+  onToggle: (isCollapsed: boolean) => void;
+}
+
+const NavBar: React.FC<NavBarProps> = ({ onToggle }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [user, setUser] = useState<{
     displayName: string | null;
@@ -65,7 +71,10 @@ const NavBar: React.FC = () => {
   
 
   const handleNavToggle = () => {
-    setIsCollapsed(!isCollapsed);
+
+     const newState = !isCollapsed;
+    setIsCollapsed(newState);
+    onToggle(newState); // Notify parent about the state change
   };
 
   const handleLogout = async () => {
@@ -83,7 +92,7 @@ const NavBar: React.FC = () => {
     <>
       {/* Sidebar for Desktop */}
       <aside
-        className={`hidden lg:flex flex-col justify-between bg-green-600 rounded-lg text-white ${
+        className={`hidden fixed lg:h-screen lg:flex flex-col justify-between navbar rounded-lg text-white ${
           isCollapsed ? 'w-16' : 'w-64'
         } h-screen transition-all duration-300`}
       >
@@ -163,29 +172,29 @@ const NavBar: React.FC = () => {
           </button>
 
           {/* User Info */}
-          {user && (
-            <div className={`p-4 border-t border-green-500 ${isCollapsed ? 'justify-center' : ''}`}>
-              <div className="flex items-center">
-                {user.photoURL ? (
-                  <img
-                    src={user.photoURL}
-                    alt="User Avatar"
-                    className="w-9 h-9 rounded-full border-2 border-white"
-                  />
-                ) : (
-                  <FaUserCircle className="w-9 h-9 text-white" /> // Fallback avatar
-                )}
-                {!isCollapsed && (
-                  <div className="ml-2">
-                    <p className="font-semibold">
-                      {user.displayName || `${user.firstName || ''} ${user.lastName || ''}` || 'User'}
-                    </p>
-                    <p className="text-sm text-green-200">{user.email}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+         {user && (
+  <div className={`p-4 border-t border-green-500 ${isCollapsed ? 'justify-center' : ''}`}>
+    <div className="flex items-center">
+      {user.photoURL ? (
+        <img
+          src={user.photoURL}
+          alt="User Avatar"
+          className="w-10 h-10 rounded-full border-2 border-white hover:border-green-500 transition-colors"
+        />
+      ) : (
+        <FaUserCircle className="w-10 h-10 text-white hover:text-green-500 transition-colors" title="User Avatar" /> // Fallback avatar
+      )}
+      {!isCollapsed && (
+        <div className="ml-2">
+          <p className="font-semibold hover:underline cursor-pointer">
+            {user.displayName || `${user.firstName || ''} ${user.lastName || ''}` || 'User'}
+          </p>
+        </div>
+      )}
+    </div>
+  </div>
+)}
+
 
            <button
             onClick={handleLogout}

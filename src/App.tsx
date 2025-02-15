@@ -6,16 +6,30 @@ import SignUp from './components/Auth/SignUp';
 import Dashboard from './components/Dashboard';
 import Profile from './components/Profile';
 import ForgotPassword from './components/ForgotPassword';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { useUserStore } from './store/useUserStore';
+import { useEffect } from 'react';
+
+
 
 
 
 function App() {
-  // const todos = [new Todo('Learn React'), new Todo('Learn Typescript'), new Todo('Learn Data Analytics')];
+
+  const fetchUserData = useUserStore((state) => state.fetchUserData);
+
+  useEffect(() => {
+    fetchUserData();
+  }, [fetchUserData]);
+
+  // Create QueryClient
+const queryClient = new QueryClient();
 
   
   return (
-    <Router>
-      
+    <QueryClientProvider client={queryClient}>
+      <Router>
       <ErrorBoundary>
       <Routes>
             <Route path="/" element={<LandingPage />} />
@@ -28,6 +42,8 @@ function App() {
         </Routes>
        </ErrorBoundary>
       </Router>
+    </QueryClientProvider>
+    
     
 
   )

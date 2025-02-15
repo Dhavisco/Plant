@@ -1,0 +1,23 @@
+{
+  "Clear": "/assets/icons/clear-day.svg",
+  "Clouds": "../assets/icons/cloudy.svg",
+  "Rain": "/assets/icons/rain.svg",
+  "Drizzle": "/assets/icons/drizzle.svg",
+  "Thunderstorm": "/assets/icons/thunderstorms.svg",
+  "Snow": "/assets/icons/snow.svg",
+  "Mist": "/assets/icons/mist.svg",
+  "Smoke": "/assets/icons/smoke.svg",
+  "Haze": "/assets/icons/haze.svg",
+  "Dust": "/assets/icons/dust.svg",
+  "Fog": "/assets/icons/fog.svg",
+  "Sand": "/assets/icons/sand.svg",
+  "Ash": "/assets/icons/ash.svg",
+  "Squall": "/assets/icons/squall.svg",
+  "Tornado": "/assets/icons/tornado.svg",
+  "Humidity": "/assets/icons/humidity.svg",
+  "WindSpeed": "/assets/icons/wind.svg",
+  "Temperature": "/assets/icons/thermometer-celsius.svg"
+
+}
+
+
