@@ -17,14 +17,24 @@ const Dashboard: React.FC = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const location = "Lagos";
-  const startDate = "2025-02-07";
-  const endDate = "2025-02-14";
+  // const startDate = "2025-02-11";
+  // const endDate = "2025-02-18";
+
+   // Get the current date and 7 days ago
+  const endDate = new Date();
+  const startDate = new Date();
+  startDate.setDate(endDate.getDate() - 7);
+
+  // Format dates as YYYY-MM-DD
+  const formatDate = (date: Date) => date.toISOString().split('T')[0];
+  const formattedStartDate = formatDate(startDate);
+  const formattedEndDate = formatDate(endDate);
 
   // Fetch weather data once in Dashboard
   const { weatherData, isLoading, error } = useWeatherHistoryData(
     location,
-    startDate,
-    endDate
+    formattedStartDate,
+    formattedEndDate
   );
 
   const handleToggle = (collapsed: boolean) => {
