@@ -9,12 +9,14 @@ import WeatherChart from './widgets/WeatherChart';
 import RainSnowHistogram from './widgets/RainSnowHistogram';
 import useWeatherHistoryData from './hooks/useWeatherHistoryData';
 import SunshineDurationChart from './widgets/SunshineDurationChart';
+import CropRecommendation from './widgets/Recommendation/CropRecommendation';
 // import DataCharts from './widgets/DataCharts';
 
 const Dashboard: React.FC = () => {
     // State to manage dropdown visibility
   const [showNotifications, setShowNotifications] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+   const [activeView, setActiveView] = useState('dashboard');
 
   const location = "Lagos";
   // const startDate = "2025-02-11";
@@ -31,7 +33,7 @@ const Dashboard: React.FC = () => {
   const formattedEndDate = formatDate(endDate);
 
   // Fetch weather data once in Dashboard
-  const { weatherData, isLoading, error } = useWeatherHistoryData(
+  const { data: weatherData, isLoading, error } = useWeatherHistoryData(
     location,
     formattedStartDate,
     formattedEndDate
@@ -39,6 +41,11 @@ const Dashboard: React.FC = () => {
 
   const handleToggle = (collapsed: boolean) => {
     setIsCollapsed(collapsed);
+  };
+
+   // Handle navigation view change
+  const handleViewChange = (view: string) => {
+    setActiveView(view);
   };
 
   // Sample alerts data
@@ -55,7 +62,7 @@ const Dashboard: React.FC = () => {
   return (
     <div className=" bg-gray-100 flex">
       {/* Sidebar (optional) */}
-      <NavBar onToggle={handleToggle}/>
+      <NavBar onToggle={handleToggle} onViewChange={handleViewChange}/>
 
       {/* Main Content */}
       <main className={`flex-1 transition-all duration-300 p-6 overflow-auto h-screen ${
@@ -100,13 +107,15 @@ const Dashboard: React.FC = () => {
             )}
           </div>
 
-      <h1 className='lg:text-xl md:text-xl font-medium mb-2'>Dashboard</h1>
-
+      {/* <h1 className='lg:text-xl md:text-xl font-medium mb-2'>Dashboard</h1> */}
+        
+        {activeView === "dashboard" && (
+          <>
         {isLoading ? (
           <p>Loading...</p>
         ) : error ? (
-          <p className="text-red-500">{error}</p>
-        ) : (
+          <p className="text-red-500">{error.message}</p>
+        ) : weatherData ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="col-span-2">
               <TimeWidget />
@@ -121,9 +130,12 @@ const Dashboard: React.FC = () => {
               <SunshineDurationChart weatherData={weatherData} />
             </div>
           </div>
-
+        ) : null}
+        </>
         )}
 
+
+        {activeView === "recommendation" && <CropRecommendation />}
         {/* Data Visualization */}
         {/* <div className="mt-6">
           <DataCharts />
@@ -132,5 +144,4 @@ const Dashboard: React.FC = () => {
     </div>
   );
 };
-
 export default Dashboard;

@@ -11,9 +11,11 @@ import './NavBar.css'
 
 interface NavBarProps {
   onToggle: (isCollapsed: boolean) => void;
+  onViewChange: (view: string) => void; // NEW PROP for view change
 }
 
-const NavBar: React.FC<NavBarProps> = ({ onToggle }) => {
+
+const NavBar: React.FC<NavBarProps> = ({ onToggle, onViewChange }) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [user, setUser] = useState<{
     displayName: string | null;
@@ -109,24 +111,25 @@ const NavBar: React.FC<NavBarProps> = ({ onToggle }) => {
 
           {/* Navigation */}
           <nav className={`mt-8 ${isCollapsed ? 'space-y-4' : ''}`}>
-            <Link
-              to="/dashboard"
+          <button
+              onClick={() => onViewChange('dashboard')}
               className={`flex items-center py-2 px-4 rounded hover:bg-green-700 ${
                 isCollapsed ? 'justify-center' : ''
               }`}
             >
               <FaHome className="mr-3" />
               {!isCollapsed && 'Dashboard'}
-            </Link>
-            <Link
-              to="/crops"
+            </button>
+            
+            <button
+              onClick={() => onViewChange('recommendation')}
               className={`flex items-center py-2 px-4 rounded hover:bg-green-700 ${
                 isCollapsed ? 'justify-center' : ''
               }`}
             >
               <FaSeedling className="mr-3" />
-              {!isCollapsed && 'Crops'}
-            </Link>
+              {!isCollapsed && 'Crop Recommendation'}
+            </button>
             <Link
               to="/alerts"
               className={`flex items-center py-2 px-4 rounded hover:bg-green-700 ${
