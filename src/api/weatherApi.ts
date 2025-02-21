@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 
 // Fetch function for weather data
 const fetchWeatherByCity = async (city: string) => {
-  const response = await axiosInstance.get(`/weather/${city}`);
+  const response = await axiosInstance.get(`/current/weather/${city}`);
   return response.data;
 };
 

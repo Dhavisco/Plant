@@ -12,7 +12,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {auth, db} from "../hooks/firebase";
 import {setDoc, doc} from 'firebase/firestore';
 import { FirebaseError } from 'firebase/app';
-import Preloader from '../Preloader';
+import Preloader from '../UI/Preloader';
 
 // Validation schemas for each step
 const personalInfoSchema = Yup.object({

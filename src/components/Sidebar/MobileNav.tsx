@@ -1,59 +1,34 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { FaHome, FaMoneyBill, FaUser } from 'react-icons/fa';
-import { IoMdSettings } from "react-icons/io";
+import React from "react";
+import { FaHome, FaSeedling, FaBell, FaUser } from "react-icons/fa";
 
-const MobileNav: React.FC = () => {
-  const location = useLocation(); // Hook to get the current route
+interface MobileNavProps {
+  activeView: string;
+  onViewChange: (view: string) => void;
+}
 
-  // Check if the current route matches the link
-  const isActive = (path: string) => location.pathname === path;
+const MobileNav: React.FC<MobileNavProps> = ({ activeView, onViewChange }) => {
+
+  const navItems = [
+    { id: "dashboard", label: "Home", icon: <FaHome /> },
+    { id: "recommendation", label: "Crops", icon: <FaSeedling /> },
+    { id: "message", label: "Alerts", icon: <FaBell /> },
+    { id: "profile", label: "Profile", icon: <FaUser /> },
+  ];
 
   return (
-    <nav className="fixed inset-x-0 bottom-0 bg-white border-t border-gray-200 shadow-lg lg:hidden">
-      <ul className="flex justify-between items-center p-4 text-gray-600">
-        
-        <li className="flex-1 text-center">
-          <Link
-            to="/dashboard"
-            className={`flex flex-col items-center ${isActive('/dashboard') ? 'text-green-600' : 'text-gray-600'}`}
-          >
-            <FaHome size={24} />
-            <span className="text-xs mt-1">Home</span>
-          </Link>
-        </li>
-        
-        <li className="flex-1 text-center">
-          <Link
-            to="/dashboard/transactions"
-            className={`flex flex-col items-center ${isActive('/dashboard/transactions') ? 'text-green-600' : 'text-gray-600'}`}
-          >
-            <FaMoneyBill size={24} />
-            <span className="text-xs mt-1">Transactions</span>
-          </Link>
-        </li>
-
-        <li className="flex-1 text-center">
-          <Link
-            to="/dashboard/account"
-            className={`flex flex-col items-center ${isActive('/dashboard/account') ? 'text-green-600' : 'text-gray-600'}`}
-          >
-            <FaUser size={24} />
-            <span className="text-xs mt-1">Account</span>
-          </Link>
-        </li>
-
-        <li className="flex-1 text-center">
-          <Link
-            to="/dashboard/settings"
-            className={`flex flex-col items-center ${isActive('/dashboard/settings') ? 'text-green-600' : 'text-gray-600'}`}
-          >
-            <IoMdSettings size={29} />
-            <span className="text-xs mt-1">Settings</span>
-          </Link>
-        </li>
-
-      </ul>
+    <nav className="fixed bottom-0 left-0 w-full z-10 bg-green-800 text-white flex justify-around py-3 shadow-md lg:hidden">
+      {navItems.map((item) => (
+        <button
+          key={item.id}
+          onClick={() => onViewChange(item.id)}
+          className={`flex flex-col items-center text-sm ${
+            activeView === item.id ? "text-yellow-400" : "text-white"
+          }`}
+        >
+          {item.icon}
+          <span className="mt-1">{item.label}</span>
+        </button>
+      ))}
     </nav>
   );
 };

@@ -1,7 +1,7 @@
 import React from 'react';
-import sunnyIcon from "../../assets/icons/clear-day.svg"; 
-import windIcon from "../../assets/icons/wind.svg"
-import humidityIcon from "../../assets/icons/humidity.svg"
+import sunnyIcon from "../../../assets/icons/clear-day.svg"; 
+import windIcon from "../../../assets/icons/wind.svg"
+import humidityIcon from "../../../assets/icons/humidity.svg"
 
 const WeatherWidget: React.FC = () => {
   // Placeholder data

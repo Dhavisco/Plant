@@ -2,7 +2,7 @@ import { useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { LuLoader2 } from 'react-icons/lu';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth } from "./hooks/firebase";
+import { auth } from "../hooks/firebase";
 import { useNavigate } from "react-router-dom";
 import { FirebaseError } from "firebase/app";
 

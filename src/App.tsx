@@ -3,9 +3,9 @@ import Login from './components/Auth/Login'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import LandingPage from './components/page/Index';
 import SignUp from './components/Auth/SignUp';
-import Dashboard from './components/Dashboard';
-import Profile from './components/Profile';
-import ForgotPassword from './components/ForgotPassword';
+import Dashboard from './components/widgets/Dashboard';
+import Profile from './components/widgets/Profile';
+import ForgotPassword from './components/Home/ForgotPassword';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { useUserStore } from './store/useUserStore';

@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import sunIcon from "../../assets/icons/clear-day.svg"
+import sunIcon from "../../../assets/icons/clear-day.svg"
 
 interface SunshineDurationChartProps {
   weatherData: {

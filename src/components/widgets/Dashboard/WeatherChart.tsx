@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 
-import tempIcon from "../../assets/icons/thermometer-celsius.svg";
+import tempIcon from "../../../assets/icons/thermometer-celsius.svg";
 interface WeatherChartProps {
     weatherData: {
   time: string;

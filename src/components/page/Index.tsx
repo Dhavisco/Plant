@@ -5,13 +5,13 @@ import { MdTipsAndUpdates, MdEmail, MdPhone, MdLocationOn } from "react-icons/md
 import { TiSocialFacebook, TiSocialTwitter, TiSocialLinkedin, TiSocialYoutube, TiSocialInstagram } from "react-icons/ti";
 import Typewriter from "typewriter-effect";
 import './Home.css'
-import FeatureSection from '../FeatureSection';
+import FeatureSection from '../Home/FeatureSection';
 import Discover from '../button/Discover';
 
 import farmer from '../../assets/bg/farm-plant.avif'
 import crop from '../../assets/bg/crop.jpg'
-import HowItWorks from '../HowItWorks';
-import Preloader from '../Preloader';
+import HowItWorks from '../Home/HowItWorks';
+import Preloader from '../UI/Preloader';
 
 const LandingPage: React.FC = () => {
 

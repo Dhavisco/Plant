@@ -9,8 +9,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-import rainIcon from "../../assets/icons/rain.svg";
-import snowIcon from "../../assets/icons/snow.svg";
+import rainIcon from "../../../assets/icons/rain.svg";
+import snowIcon from "../../../assets/icons/snow.svg";
 
 interface RainSnowHistogramProps {
   weatherData: {

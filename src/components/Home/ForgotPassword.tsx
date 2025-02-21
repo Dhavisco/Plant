@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "./hooks/firebase";
+import { auth } from "../hooks/firebase";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Card from "./UI/Card";
+import Card from "../UI/Card";
 import { AiOutlineClose } from "react-icons/ai";
 
 const ForgotPassword: React.FC = () => {

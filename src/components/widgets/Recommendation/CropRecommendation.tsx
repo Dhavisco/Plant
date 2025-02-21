@@ -2,11 +2,13 @@ import { useEffect, useState } from "react"
 import {useCropRecommendation, useCheckCropSuitability} from "../../hooks/useCropRecommendation"
 import { FaLeaf, FaCloudRain, FaCloud, FaWind, FaMapMarkerAlt, FaFlask, FaSearch } from "react-icons/fa"
 import { TbPlant2 } from "react-icons/tb"
+import useLocationStore from "../../../store/useLocationStore"
+import Preloader from "../../UI/Preloader"
 
 interface Location {
   city: string
   state: string
-  ecological_zone: string
+  zone: string
 }
 
 interface SoilProperties {
@@ -28,19 +30,23 @@ export interface CropRecommendationData {
   status: string
   location: Location
   soil_properties: SoilProperties
-  weather: Weather
+  weather_data: Weather
   recommended_crops: string[]
+  other_crops_in_zone: string[]
+  crop_fertility: string
 }
 
 const CropRecommendation: React.FC = () => {
-  const { data, isLoading, error } = useCropRecommendation("Lagos")
+
+  const { location } = useLocationStore(); // Get location from Zustand store
+  const { data, isLoading, error } = useCropRecommendation(location)
 
   const [cropInput, setCropInput] = useState("")
    const [selectedCrop, setSelectedCrop] = useState("")
     const [cropSuitabilityMessage, setCropSuitabilityMessage] = useState<string | null>(null);
 
   // Use effect to trigger fetching only when selectedCrop changes
-  const { data: cropData, isFetching } = useCheckCropSuitability(selectedCrop, "Lagos");
+  const { data: cropData, isFetching } = useCheckCropSuitability(selectedCrop, location);
 
   useEffect(() => {
 
@@ -51,10 +57,6 @@ const CropRecommendation: React.FC = () => {
 
   // Convert selected crop to lowercase for comparison
   const normalizedCrop = selectedCrop.trim().toLowerCase();
-
-  console.log("Normalized Crop:", normalizedCrop);
-  console.log("Suitable Crops:", cropData?.suitable_crops);
-  console.log("Crop Suitability Map:", cropData?.crop_suitability);
 
   // Check if the crop is in the suitability list
   if (cropData?.suitable_crops?.map((c: string) => c.toLowerCase()).includes(normalizedCrop)) {
@@ -72,26 +74,38 @@ const CropRecommendation: React.FC = () => {
     setSelectedCrop(cropInput); // Directly set selectedCrop
   };
 
+  const handleClearSearch = () => {
+  setCropInput(""); // Clear input field
+  setSelectedCrop(""); // Reset selected crop (triggers useEffect to reset suitability message)
+  setCropSuitabilityMessage(null); // Clear suitability message
+};
+  
 
-  if (isLoading) return <p>Loading...</p>
+
+  if (isLoading) {
+    return <Preloader />;
+  }
+
   if (error) return <p className="text-red-500">{error.message}</p>
 
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-6">
-        <WeatherCard weather={data?.weather} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-3">
+        <WeatherCard weather={data?.weather_data} />
         <LocationCard location={data?.location} />
         <SoilPropertiesCard soilProperties={data?.soil_properties} />
         <div className="md:col-span-3">
-          <RecommendedCropsCard recommendedCrops={data?.recommended_crops} />
+          <RecommendedCropsCard recommendedCrops={data?.recommended_crops} otherCrops = {data?.other_crops_in_zone} cropFertility = {data?.crop_fertility}/>
         </div>
         <div className="md:col-span-3">
           <CropSearchCard
-            cropInput={cropInput}
-            setCropInput={setCropInput}
-            handleCropSearch={handleCropSearch}
-            searchResult={isFetching ? "Checking..." : cropSuitabilityMessage}
-          />
+  cropInput={cropInput}
+  setCropInput={setCropInput}
+  handleCropSearch={handleCropSearch}
+  searchResult={isFetching ? "Checking..." : cropSuitabilityMessage}
+  handleClearSearch={handleClearSearch} // Pass the function
+/>
+
         </div>
       </div>
     </div>
@@ -111,23 +125,23 @@ const Card: React.FC<React.PropsWithChildren<{ title: string; icon: React.ReactN
 )
 
 // Crop Search Card Component
-// Crop Search Card Component
 const CropSearchCard: React.FC<{
   cropInput: string;
   setCropInput: (value: string) => void;
   handleCropSearch: () => void;
   searchResult: string | null;
-}> = ({ cropInput, setCropInput, handleCropSearch, searchResult }) => {
+   handleClearSearch: () => void;
+}> = ({ cropInput, setCropInput, handleCropSearch, handleClearSearch, searchResult }) => {
   const isInputEmpty = !cropInput.trim(); // Check if input is empty
 
   return (
     <Card title="Do you Have a Crop in Mind?" icon={<FaSearch className="text-yellow-600" />}>
-      <div className="flex flex-col space-y-3">
+      <div className="flex flex-col mt-2 space-y-3">
         <input
           type="text"
           value={cropInput}
           onChange={(e) => setCropInput(e.target.value)}
-          placeholder="Enter a crop name..."
+          placeholder="Enter a crop name and determine if suitable..."
           className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-yellow-300"
         />
         <button
@@ -141,14 +155,21 @@ const CropSearchCard: React.FC<{
         >
           Check Suitability
         </button>
-        {searchResult && (
-          <p
-            className={`text-sm font-medium ${
-              searchResult.includes("not suitable") ? "text-red-500" : "text-gray-700"
-            }`}
-          >
-            {searchResult}
-          </p>
+         {searchResult && (
+          <div className="flex justify-between items-center bg-gray-100 p-3 rounded-md">
+            <p className={`text-sm font-medium ${searchResult.includes("not suitable") ? "text-red-500" : "text-gray-700"}`}>
+              {searchResult}
+            </p>
+
+            {/* Clear Button */}
+            <button
+              onClick={handleClearSearch} // Call the function to clear input & result
+              className="ml-3 text-gray-500 hover:text-red-600 transition"
+              title="Clear search"
+            >
+              ✖
+            </button>
+          </div>
         )}
       </div>
     </Card>
@@ -166,7 +187,7 @@ const LocationCard: React.FC<{ location: Location | undefined }> = ({ location }
         <strong>State:</strong> {location?.state}
       </li>
       <li>
-        <strong>Ecological Zone:</strong> {location?.ecological_zone}
+        <strong>Ecological Zone:</strong> {location?.zone}
       </li>
     </ul>
   </Card>
@@ -224,7 +245,7 @@ const WeatherCard: React.FC<{ weather: Weather | undefined }> = ({ weather }) =>
             <span className="md:text-4xl font-semibold">{weather?.temperature_2m}°c</span>
           </div>
         </div>
-        <div className="rounded-full bg-yellow-300 p-2 w-24 h-24 flex items-center justify-center">
+        <div className="rounded-full bg-yellow-300 p-2 w-24 h-24 flex items-center justify-center hover:scale-110 transition duration-300 ease-in-out transform">
           <div className="rounded-full bg-yellow-200 p-2 w-20 h-20 flex items-center justify-center">
             <TbPlant2 className="text-green-500 h-16 w-auto" />
           </div>
@@ -255,8 +276,12 @@ const WeatherCard: React.FC<{ weather: Weather | undefined }> = ({ weather }) =>
   )
 }
 
-const RecommendedCropsCard: React.FC<{ recommendedCrops: string[] | undefined }> = ({ recommendedCrops }) => (
+const RecommendedCropsCard: React.FC<{ recommendedCrops: string[] | undefined; otherCrops :string[] | undefined; cropFertility:string | undefined }> = ({ recommendedCrops, otherCrops, cropFertility }) => (
   <Card title="Recommended Crops" icon={<FaLeaf className="text-green-500" />}>
+
+  <div className="flex lg:flex-row flex-col lg:gap-16">
+  <div className="flex flex-col border-[1] border-solid border-green-300 bg-gray-100 rounded-md p-1 px-2">
+  <h2 className="text-gray-700 text-sm font-light">The Best suitable crop for this location is:</h2>
     <div className="flex flex-wrap gap-2">
       {recommendedCrops?.map((crop, index) => (
         <span key={index} className="px-3 py-1 rounded-sm text-sm font-semibold text-green-700 bg-green-100">
@@ -264,6 +289,25 @@ const RecommendedCropsCard: React.FC<{ recommendedCrops: string[] | undefined }>
         </span>
       ))}
     </div>
+  </div>
+  
+
+    <div className="flex flex-col border-[1] border-solid border-green-300 bg-gray-100 rounded-md p-1 px-2">
+     <h2 className="text-gray-700 text-sm font-light">Other recommended crops include:</h2>
+    <div className="flex flex-wrap  gap-2">
+      {otherCrops?.map((crop, index) => (
+        <span key={index} className="px-3 py-1 rounded-sm text-sm font-semibold text-green-700 bg-yellow-100">
+          {crop}
+        </span>
+      ))}
+    </div>
+    </div>
+   
+  </div>
+   
+
+    <h2 className="text-gray-700 text-sm mt-2 ">Plant in a {cropFertility} environment for best crop yield</h2>
+    
   </Card>
 )
 

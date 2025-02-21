@@ -1,5 +1,5 @@
 .timeWidget {
-  background: url('../../assets/bg/weather-bgimage.png') no-repeat center center;
+  background: url('../../../assets/bg/weather-bgimage.png') no-repeat center center;
   background-size: cover;
   position: relative;
   border-radius: 0.75rem; /* To match the rounded-xl class */

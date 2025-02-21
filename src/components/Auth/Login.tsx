@@ -8,11 +8,11 @@ import Card from '../UI/Card';
 import { LuLoader2 } from 'react-icons/lu';
 import { FaCheckCircle} from "react-icons/fa";
 import { MdCancel } from "react-icons/md";
-import GoogleLogin from '../GoogleLogin';
+import GoogleLogin from '../Home/GoogleLogin';
 import {auth} from "../hooks/firebase";
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
-import Preloader from '../Preloader';
+import Preloader from '../UI/Preloader';
 
 const Login: React.FC = () => {
 

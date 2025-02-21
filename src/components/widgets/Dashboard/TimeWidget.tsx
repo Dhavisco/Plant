@@ -1,34 +1,35 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaLocationDot } from 'react-icons/fa6';
-import weatherIcons from "../../store/data.json"
-
-import windIcon from '../../assets/icons/wind.svg';
-import humidityIcon from '../../assets/icons/humidity.svg';
-import thermometerIcon from '../../assets/icons/thermometer-celsius.svg'
-import { useWeather } from '../../api/weatherApi';
-import { useUserStore } from '../../store/useUserStore'; 
-import Preloader from '../Preloader'; // Assuming Preloader is in src/components
+import weatherIcons from "../../../store/data.json"
+import windIcon from '../../../assets/icons/wind.svg';
+import humidityIcon from '../../../assets/icons/humidity.svg';
+import thermometerIcon from '../../../assets/icons/thermometer-celsius.svg'
+import { useWeather } from '../../../api/weatherApi';
+import { useUserStore } from '../../../store/useUserStore'; 
+import useLocationStore from '../../../store/useLocationStore';
 
 import './TimeWidget.css';
 
+
 const TimeWidget: React.FC = () => {
+
+    const { location } = useLocationStore(); 
+
   // State for time and date
   const [timeData, setTimeData] = useState({
-    location: 'Lagos',
     hour: '',
     minute: '',
     date: '',
     weekday: '',
   });
 
-  const { userDetails, isLoading: isUserLoading } = useUserStore(); // Get user details
+  const { userDetails } = useUserStore(); // Get user details
 
   const [greeting, setGreeting] = useState('');
   
 
   // Use custom hook to fetch weather data
-  const city = useMemo(() => 'Ojo', []); // Or use prop/state with dependency array
-  const { data, isLoading, error } = useWeather(city);
+  const { data, error } = useWeather(location);
 
   // const { data, isLoading, error } = useWeather('Mushin');
 
@@ -76,11 +77,6 @@ const TimeWidget: React.FC = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Loading and Error Handling
-  if (isLoading || isUserLoading) {
-    return <Preloader />;
-  }
-
   if (error) {
     return <div className="text-red-500">Failed to load weather data.</div>;
   }
@@ -89,7 +85,7 @@ const TimeWidget: React.FC = () => {
 
   console.log(data)
   const weather = data?.data?.weather;
-  const location = data?.data?.location;
+  const currentLocation = data?.data?.location;
 
   // Get the weather condition to determine the icon
   const weatherCondition = weather?.main as keyof typeof weatherIcons;
@@ -112,7 +108,7 @@ const TimeWidget: React.FC = () => {
           <div className="flex justify-start gap-1 rounded-md bg-gray-800 bg-opacity-50 py-1 px-3 items-center overlay">
             <FaLocationDot className="h-3 w-3 md:h-4 md:w-4 text-white" />
             <h2 className="md:text-base text-xs text-white  tracking-wide">
-              {location?.city || 'Lagos'}, {location?.state}
+              {currentLocation?.city || 'Lagos'}, {currentLocation?.state}
             </h2>
           </div>
         </div>
